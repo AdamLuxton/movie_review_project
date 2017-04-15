@@ -125,13 +125,14 @@
           <div class="row">
             <div class="col-xs-12">
               <br>
+              <p id="error" class="hide">Please Complete the Comment Form!</p>
               <form>
                 <input name="movie" id="movie_id" class="hide" value="">
                 <div class="form-group">
-                  <input id="name" class="form-control" placeholder="Enter Your Name">
+                  <input id="name" type="text" class="form-control" placeholder="Enter Your Name" required>
                 </div>
                 <div class="form-group">
-                  <textarea id="comment" rows="5"  class="form-control"></textarea>
+                  <textarea id="comment" rows="5"  class="form-control" required></textarea>
                 </div>
                 <button id="submit">Comment</button>
 

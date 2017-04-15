@@ -60,17 +60,23 @@
       return;
 		}
 
-    var name = encodeURIComponent(document.querySelector('#name').value);
-    var comment = encodeURIComponent(document.querySelector('#comment').value);
-    movie_id = document.querySelector('#movie_id').value;
+    if ((document.querySelector('#name').value!="")&&(document.querySelector('#comment').value!="")){
+      var name = encodeURIComponent(document.querySelector('#name').value);
+      var comment = encodeURIComponent(document.querySelector('#comment').value);
+      movie_id = document.querySelector('#movie_id').value;
 
-    url = "admin/phpscripts/post.php" + "?id=" + movie_id + "&name=" + name + "&comment=" + comment;
+      url = "admin/phpscripts/post.php" + "?id=" + movie_id + "&name=" + name + "&comment=" + comment;
 
-    console.log(url);
+      console.log(url);
 
-		httpRequest.onreadystatechange = addComment;
-		httpRequest.open("GET", url);
-		httpRequest.send();
+  		httpRequest.onreadystatechange = addComment;
+  		httpRequest.open("GET", url);
+  		httpRequest.send();
+    }
+    else{
+      document.querySelector("#error").classList.remove('hide');
+    }
+
   }
 
   function addComment(){
