@@ -26,6 +26,15 @@ video {
     font-size: 1.4em;
     width: 100%; }
 
+#commentTitle {
+  margin-top: 50px; }
+
+#commentList {
+  border-top: 1px #333 solid; }
+
+.commentBox {
+  border-top: 1px #333 solid; }
+
 #arrow {
   position: fixed;
   top: 10px;

@@ -5,6 +5,7 @@
   var cat = document.querySelector('#category'),
       search = document.querySelector('#search'),
       list = document.querySelector('#movieList'),
+      commentList = document.querySelector('#commentList'),
       index = document.querySelector('#index'),
       review = document.querySelector('#review'),
       play = document.querySelector('#play'),
@@ -16,6 +17,8 @@
       desc = document.querySelector("#reviewBox p"),
       playing = false,
       arrow = document.querySelector('#arrow'),
+      id = document.querySelector('#movie_id'),
+      movie_id,
       movies;
 
       video.muted = false;
@@ -49,12 +52,48 @@
 		httpRequest.send();
   }
 
+  function commentCall(e){
+    e.preventDefault();
+    httpRequest = new XMLHttpRequest();
+    if(httpRequest===null){
+    	alert("Whoa there! Your browser is not updated enough to use this site. Maybe it's time for and <a href='http://browsehappy.com'>upgrade</a>?");
+      return;
+		}
+
+    var name = encodeURIComponent(document.querySelector('#name').value);
+    var comment = encodeURIComponent(document.querySelector('#comment').value);
+    movie_id = document.querySelector('#movie_id').value;
+
+    url = "admin/phpscripts/post.php" + "?id=" + movie_id + "&name=" + name + "&comment=" + comment;
+
+    console.log(url);
+
+		httpRequest.onreadystatechange = addComment;
+		httpRequest.open("GET", url);
+		httpRequest.send();
+  }
+
+  function addComment(){
+     if(httpRequest.readyState===4 || httpRequest.readyState==="complete"){
+       if (httpRequest.responseText=="1") {
+         //console.log("worked");
+         getBoxes(movie_id);
+       }
+       else{
+         console.log("something went wrong.");
+       }
+
+     }
+   }
+
   function loadInfo(){
      if(httpRequest.readyState===4 || httpRequest.readyState==="complete"){
        var json = JSON.parse(httpRequest.responseText);
        title.innerHTML = json[0].movie_name;
        desc.innerHTML = json[0].movie_desc;
        video.currentSrc = "movies/" + json[0].movie_video;
+       id.value = json[0].movie_id;
+       getBoxes(json[0].movie_id);
      }
    }
 
@@ -74,6 +113,7 @@
     [].forEach.call(movies, function(box){
       box.addEventListener('click', function(){
         url = "admin/phpscripts/getInfo.php" + "?movie=" + box.id;
+        //console.log(url);
         infoCall(url);
         TweenMax.to(index, 0.5, {opacity: 0, ease: Power1.easeOut, onComplete: function(){
           index.style.display = "none";
@@ -156,8 +196,50 @@
     }});
   }
 
+  function getBoxes(id){
+    httpRequest = new XMLHttpRequest();
+    if(httpRequest===null){
+    	alert("Whoa there! Your browser is not updated enough to use this site. Maybe it's time for and <a href='http://browsehappy.com'>upgrade</a>?");
+      return;
+		}
+
+    url = "admin/phpscripts/boxes?id=" + id;
+
+    //console.log(url);
+
+		httpRequest.onreadystatechange = addBoxes;
+		httpRequest.open("get", url);
+		httpRequest.send();
+  }
+
+  function addBoxes(){
+    if(httpRequest.readyState===4 || httpRequest.readyState==="complete"){
+      commentList.innerHTML="";
+      var json = JSON.parse(httpRequest.responseText);
+      for (var i = 0; i < json.length; i++) {
+        makeBoxes(json[i]);
+      }
+
+    }
+
+  }
+
+  function makeBoxes(array){
+    //console.log(array.comment_name);
+    var div = document.createElement("div");
+    div.className = "col-xs-12 commentBox";
+    var h3 = document.createElement("h3");
+    h3.appendChild(document.createTextNode(decodeURI(array.comment_name)));
+    var p = document.createElement("p");
+    p.appendChild(document.createTextNode(decodeURI(array.comment_comment)));
+    div.appendChild(h3);
+    div.appendChild(p);
+    commentList.appendChild(div);
+  }
+
   //Listeners
   arrow.addEventListener('click', backIndex, false);
+  document.querySelector('#submit').addEventListener('click', commentCall, false);
   play.addEventListener('click', pauseVideo, false);
   scrubber.addEventListener('click', scrubVideo, false);
   mute.addEventListener('click', muteVideo, false);
