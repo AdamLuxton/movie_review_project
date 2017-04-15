@@ -122,6 +122,35 @@
           <h2>Movie Title</h2>
           <p>Description</p>
 
+          <div class="row">
+            <div class="col-xs-12">
+              <br>
+              <p id="error" class="hide">Please Complete the Comment Form!</p>
+              <form>
+                <input name="movie" id="movie_id" class="hide" value="">
+                <div class="form-group">
+                  <input id="name" type="text" class="form-control" placeholder="Enter Your Name" required>
+                </div>
+                <div class="form-group">
+                  <textarea id="comment" rows="5"  class="form-control" required></textarea>
+                </div>
+                <button id="submit">Comment</button>
+
+              </form>
+
+              <h2 id="commentTitle">Comments:</h2>
+              <div class="row" id="commentList">
+                <div class="col-xs-12 commentBox">
+                  <h3>Name</h3>
+                  <p>Comment</p>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
       </div>

@@ -32,6 +32,23 @@ video{
   }
 }
 
+#error{
+  color: rgb(244, 54, 54);
+}
+
+#commentTitle{
+  margin-top: 50px;
+}
+
+#commentList{
+  border-top: 1px #333 solid;
+  margin-bottom: 50px;
+}
+
+.commentBox{
+  border-top: 1px #333 solid;
+}
+
 #arrow{
   position: fixed;
   top: 10px;
